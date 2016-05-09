@@ -20,6 +20,6 @@ IMPORTANTE: En el Producto de PAYTPV será necesario definir la URL de Notificac
 
 ### Soporte
 
-El manual de instalación y uso del módulo se puede consultar [aquí](https://github.com/PayTpv/paytpv-for-opencart/PAYTPV-MODULO_OPENCART.pdf).
+El manual de instalación y uso del módulo se puede consultar [aquí](https://github.com/PayTpv/paytpv-for-opencart/raw/master/PAYTPV-MODULO_OPENCART.pdf).
 
 Si tienes alguna duda o pregunta no tienes más que escribirnos un email a [info@paytpv.com]

@@ -1,25 +1,30 @@
 <?php
 // Heading
-$_['heading_title']     = 'Thank you for shopping with %s .... ';
+$_['heading_title']         = 'PAYTPV Cards';
+
+// Column
+$_['column_type']		    = 'Card Type';
+$_['column_digits']	        = 'Last Digits';
+$_['column_action']		    = 'Action';
 
 // Text
-$_['text_credit_cards']        = 'Credit Cards';
-$_['text_new_card']        = 'New Card';
-$_['text_title']        = 'Credit Card / Debit Card (PayTPV)';
-$_['text_pay']        = 'Pay';
-$_['text_wait']        = 'Wait';
-$_['text_response']     = 'Response from PayTPV:';
-$_['text_success']      = '... your payment was successfully received.';
-$_['text_success_wait'] = '<b><span style="color: #FF0000">Please wait...</span></b> whilst we finish processing your order.<br>If you are not automatically re-directed in 10 seconds, please click <a href="%s">here</a>.';
-$_['text_failure']      = '... Your payment has been cancelled!';
-$_['text_failure_wait'] = '<b><span style="color: #FF0000">Please wait...</span></b><br>If you are not automatically re-directed in 10 seconds, please click <a href="%s">here</a>.';										  
+$_['text_empty']		    = 'You have no saved cards';
+$_['text_account']          = 'Account';
+$_['text_card']			    = 'PAYTPV Card Management';
+$_['text_fail_card']	    = 'There was an issue removing your PAYTPV card, Please contact the shop administrator for help.';
+$_['text_success_card']     = 'PAYTPV card successfully removed';
+$_['text_success_add_card'] = 'PAYTPV card successfully added';
 
-$_['text_commerce_password']  = 'Commerce Password';
 
 $_['text_streamline']		= 'STREAMLINE YOUR FUTURE PURCHASES!';
 $_['txt_remember']		= 'Yes, remember my card accepting the ';
 $_['txt_terms']		= 'terms and conditions of the service';	
 $_['txt_click_terms']		= 'By linking a card you accept the';
+
+$_['txt_cancel']		= 'Cancel';
+$_['txt_link_card']		= 'Link Card';
+
+$_['txt_msg_accept']	= 'You must accept the terms and conditions of the service';
 
 $_['text_conditions4']        = 'Linked cards';
 $_['text_conditions5']        = 'This business does not store or transmit credit card or debit card data. Data is sent over an encrypted and secure channel to the PAYTPV platform.';
@@ -38,9 +43,13 @@ $_['text_conditions17']        = 'Disaster Recovery';
 $_['text_conditions18']        = 'PAYTPV has Backup systems hosted in different countries to ensure optimal safety of the systems and high availability. It also has a complete business continuity and disaster recovery policy.';
 
 
-$_['err_commerce_password']		= 'Commerce Password Invalid';
-$_['err_card_user']				= 'Invalid Card';
-$_['err_error']					= 'Error:';
+// Button
+$_['button_add_card']       = 'Add Card';
+$_['button_new_card']       = 'Add New Card';
+$_['button_delete']       = 'Delete';
+$_['button_back']       = 'Back';
+
+$_['text_pagination']       = 'Show %d to %d of %d (%d Páges)';
 
 
-?>
+

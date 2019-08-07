@@ -1,7 +1,7 @@
 <?php
 class ModelPaymentPayTPV extends Model {
 
-    public $url_paytpv = "https://secure.paytpv.com/gateway/bnkgateway.php";
+    public $url_paytpv = "https://api.paycomet.com/gateway/bnkgateway.php";
 
     public function getMethod($address, $total) {
       $this->load->language('payment/paytpv');

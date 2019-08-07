@@ -1,11 +1,11 @@
 <?php
 // Heading
-$_['heading_title']      = 'PayTPV';
+$_['heading_title']      = 'PAYCOMET';
 
 // Text 
 $_['text_payment']       = 'Payment';
-$_['text_success']		 = 'Success: You have modified PAYTPV account details!';
-$_['text_paytpv']      	 = '<a onclick="window.open(\'https://www.paytpv.com\');"><img src="view/image/payment/paytpv.png" alt="PayTPV" title="PayTPV" style="border: 1px solid #EEEEEE;" /></a>';
+$_['text_success']		 = 'Success: You have modified PAYCOMET account details!';
+$_['text_paytpv']      	 = '<a onclick="window.open(\'https://www.paycomet.com\');"><img src="view/image/payment/paycomet.png" alt="PAYCOMET" title="PAYCOMET" style="border: 1px solid #EEEEEE;" /></a>';
 	
 $_['text_secure'] = "Secure";
 $_['text_nosecure'] = "Non-Secure";
@@ -30,7 +30,7 @@ $_['entry_commerce_password']   = 'Commerce password required in saved cards pur
 $_['entry_stored_cards']        = 'Manage Stored Cards';
 
 // Error
-$_['error_permission']   	= 'Atention: No permission to modify PAYTPV configuration!';
+$_['error_permission']   	= 'Atention: No permission to modify PAYCOMET configuration!';
 $_['error_client']     		= 'Invalid Cliente Code!';
 $_['error_password']     	= 'Invalid Password';
 $_['error_terminal']     	= 'Invalid Terminal';
@@ -45,9 +45,9 @@ $_['text_refund_issued'] = 'Refund was successfully issued';
 
 // Help
 
-$_['help_client']     		= 'PAYTPV Client Code';
-$_['help_terminal']     	= 'PAYTPV Terminal Number';
-$_['help_password']     	= 'PAYTPV Password';
+$_['help_client']     		= 'PAYCOMET Client Code';
+$_['help_terminal']     	= 'PAYCOMET Terminal Number';
+$_['help_password']     	= 'PAYCOMET Password';
 $_['help_tdfirst']     		= 'Use 3D Secure in first purchase';
 $_['help_tdmin']     		= 'Empty for disable';
 $_['help_commerce_password']     	= 'For security, enter your user password Store';

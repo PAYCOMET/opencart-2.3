@@ -1,11 +1,11 @@
 <?php
 // Heading
-$_['heading_title']      = 'PayTPV';
+$_['heading_title']      = 'PAYCOMET';
 
 // Text 
 $_['text_payment']       = 'Pago';
-$_['text_success']		 = 'Correcto: Ha modificado los datos de PAYTPV!';
-$_['text_paytpv']      	 = '<a onclick="window.open(\'https://www.paytpv.com\');"><img src="view/image/payment/paytpv.png" alt="PayTPV" title="PayTPV" style="border: 1px solid #EEEEEE;" /></a>';
+$_['text_success']		 = 'Correcto: Ha modificado los datos de PAYCOMET!';
+$_['text_paytpv']      	 = '<a onclick="window.open(\'https://www.paycomet.com\');"><img src="view/image/payment/paycomet.png" alt="PAYCOMET" title="PAYCOMET" style="border: 1px solid #EEEEEE;" /></a>';
 	
 $_['text_secure'] = "Seguro";
 $_['text_nosecure'] = "No Seguro";
@@ -30,7 +30,7 @@ $_['entry_commerce_password']   = 'Contraseña del comercio para pagos con tarje
 $_['entry_stored_cards']        = 'Administrar Tarjetas Almacenadas';
 
 // Error
-$_['error_permission']   	= 'Atenci&oacute;n: No tiene permiso parar modificar el pago PayTPV!';
+$_['error_permission']   	= 'Atenci&oacute;n: No tiene permiso parar modificar el pago PAYCOMET!';
 $_['error_client']     		= 'Código de Cliente no válido!';
 $_['error_password']     	= 'Contraseña no válida';
 $_['error_terminal']     	= 'Terminal no válido';
@@ -46,9 +46,9 @@ $_['text_refund_issued'] = 'La devolución se ha realizado con éxito';
 
 // Help
 
-$_['help_client']     		= 'PAYTPV Código de Cliente';
-$_['help_terminal']     	= 'PAYTPV Número de Terminal';
-$_['help_password']     	= 'PAYTPV Contraseña';
+$_['help_client']     		= 'PAYCOMET Código de Cliente';
+$_['help_terminal']     	= 'PAYCOMET Número de Terminal';
+$_['help_password']     	= 'PAYCOMET Contraseña';
 $_['help_tdfirst']     		= 'Usar 3D Secure en compras superiroes a ';
 $_['help_tdmin']     		= 'Deja vacío para no usar';
 $_['help_commerce_password']     	= 'Para mayor seguridad, se requiere la contraseña del comercio en pagos con tarjetas tokenizadas';

@@ -1,9 +1,9 @@
 <modification>
-   <name><![CDATA[<font color="#0000"><b>PAYTPV Cards</font>]]></name>
+   <name><![CDATA[<font color="#0000"><b>PAYCOMET Cards</font>]]></name>
    <code>PAYTPV_Cards</code>
     <version><![CDATA[<b>1.0</b>]]></version>
-    <author><![CDATA[<font color="#CC0000"><b>PAYTPV</font>]]></author>
-    <link><![CDATA[http://www.paytpv.com]]></link>
+    <author><![CDATA[<font color="#CC0000"><b>PAYCOMET</font>]]></author>
+    <link><![CDATA[http://www.paycomet.com]]></link>
 
 <file path="catalog/language/en-gb/account/account.php">
     <operation>
@@ -11,7 +11,7 @@
             <?php
 			]]></search>
 			<add position="after"><![CDATA[
-            $_['text_paytpv_cards']  = 'PAYTPV Cards';]]>
+            $_['text_paytpv_cards']  = 'PAYCOMET Cards';]]>
         	</add>
 	</operation>
 </file>
@@ -21,7 +21,7 @@
             <?php
 			]]></search>
 			<add position="after"><![CDATA[
-            $_['text_paytpv_cards']  = 'PAYTPV Cards';]]>
+            $_['text_paytpv_cards']  = 'PAYCOMET Cards';]]>
         	</add>
 	</operation>
 </file>
@@ -31,7 +31,7 @@
             <?php
 			]]></search>
 			<add position="after"><![CDATA[
-            $_['text_paytpv_cards']  = 'Tarjetas PAYTPV';]]>
+            $_['text_paytpv_cards']  = 'Tarjetas PAYCOMET';]]>
         	</add>
 	</operation>
 </file>
@@ -41,7 +41,7 @@
             <?php
 			]]></search>
 			<add position="after"><![CDATA[
-            $_['text_paytpv_cards']  = 'Tarjetas PAYTPV';]]>
+            $_['text_paytpv_cards']  = 'Tarjetas PAYCOMET';]]>
         	</add>
 	</operation>
 </file>
@@ -51,7 +51,7 @@
             <?php
 			]]></search>
 			<add position="after"><![CDATA[
-            $_['text_paytpv_cards']  = 'Tarjetas PAYTPV';]]>
+            $_['text_paytpv_cards']  = 'Tarjetas PAYCOMET';]]>
         	</add>
 	</operation>
 </file>
@@ -63,7 +63,7 @@
 			$data['text_newsletter'] = $this->language->get('text_newsletter');
 			]]></search>
 			<add position="after"><![CDATA[
-			    $data['text_paytpv_cards'] = sprintf($this->language->get('text_paytpv_cards'), "PAYTPV Cards");
+			    $data['text_paytpv_cards'] = sprintf($this->language->get('text_paytpv_cards'), "PAYCOMET Cards");
 			    $data['text_paytpv_cards_link'] = $this->url->link('credit_card/paytpv', '', 'SSL');]]>
 			</add>
 	</operation>

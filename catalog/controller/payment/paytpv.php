@@ -136,7 +136,7 @@ class ControllerPaymentPayTPV extends Controller {
 		$OPERATION = "1";
 		
 		// Cálculo Firma
-		$signature = md5($paytpv_client.$paytpv_terminal.$OPERATION.$paytpv_order_ref.$amount.$currency_iso_code.md5($paytpv_password));
+		$signature = hash('sha512',$paytpv_client.$paytpv_terminal.$OPERATION.$paytpv_order_ref.$amount.$currency_iso_code.md5($paytpv_password));
 		$fields = array
 		(
 			'MERCHANT_MERCHANTCODE' => $paytpv_client,

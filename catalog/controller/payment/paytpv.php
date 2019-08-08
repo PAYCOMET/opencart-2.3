@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 class ControllerPaymentPayTPV extends Controller {
 
-	public $url_paytpv = "https://secure.paytpv.com/gateway/bnkgateway.php";
+	public $url_paytpv = "https://api.paycomet.com/gateway/bnkgateway.php";
 	private $_client = null;
 
 	
@@ -435,7 +435,7 @@ class ControllerPaymentPayTPV extends Controller {
 	private function getClient()
     {
         if (null == $this->_client)
-            $this->_client = new SoapClient('https://secure.paytpv.com/gateway/xml_bankstore.php?wsdl');
+            $this->_client = new SoapClient('https://api.paycomet.com/gateway/xml_bankstore.php?wsdl');
  
         return $this->_client;
     }

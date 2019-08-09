@@ -1,22 +1,22 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-class ControllerPaymentPayTPV extends Controller {
+class ControllerPaymentPayCOMET extends Controller {
 
-	public $url_paytpv = "https://api.paycomet.com/gateway/bnkgateway.php";
+	public $url_paycomet = "https://api.paycomet.com/gateway/bnkgateway.php";
 	private $_client = null;
 
 	
 	public function index() {
-		$this->load->model('payment/paytpv');
-    	$this->load->language('payment/paytpv');
+		$this->load->model('payment/paycomet');
+    	$this->load->language('payment/paycomet');
 
-    	$data['paytpv_iframe'] = $this->paytpv_iframe_URL();
+    	$data['paycomet_iframe'] = $this->paycomet_iframe_URL();
 
-    	$paytpv_client  = $this->config->get('paytpv_client');
-    	$paytpv_terminal  = $this->config->get('paytpv_terminal');
-    	$paytpv_password  = $this->config->get('paytpv_password');
-    	$data['paytpv_commerce_password'] = $this->config->get('paytpv_commerce_password');
+    	$paycomet_client  = $this->config->get('paycomet_client');
+    	$paycomet_terminal  = $this->config->get('paycomet_terminal');
+    	$paycomet_password  = $this->config->get('paycomet_password');
+    	$data['paycomet_commerce_password'] = $this->config->get('paycomet_commerce_password');
 
 		$data['text_credit_card'] = $this->language->get('text_credit_card');
 		$data['text_wait'] = $this->language->get('text_wait');
@@ -78,24 +78,24 @@ class ControllerPaymentPayTPV extends Controller {
 		$data["txt_terms"] = $this->language->get('txt_terms');
 
 
-		$data['saved_cards'] = $this->model_payment_paytpv->getCards($this->customer->getId());
+		$data['saved_cards'] = $this->model_payment_paycomet->getCards($this->customer->getId());
 
 		$data['order_id'] = $this->session->data['order_id'];
 
 		// Add Agree
-		$this->model_payment_paytpv->addOrderAgree($this->session->data['order_id'],$this->session->data['customer_id']);
+		$this->model_payment_paycomet->addOrderAgree($this->session->data['order_id'],$this->session->data['customer_id']);
 		if ($this->isOpencart2()){
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/paytpv.tpl')) {
-				return $this->load->view($this->config->get('config_template') . '/template/payment/paytpv.tpl', $data);
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/paycomet.tpl')) {
+				return $this->load->view($this->config->get('config_template') . '/template/payment/paycomet.tpl', $data);
 			} else {
-				return $this->load->view('payment/paytpv.tpl', $data);
+				return $this->load->view('payment/paycomet.tpl', $data);
 			}
 		}else{
 			$this->document->addScript('catalog/view/javascript/jquery/colorbox/jquery.colorbox-min.js');
 			$this->document->addStyle('catalog/view/javascript/jquery/colorbox/colorbox.css');
 
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/paytpv.tpl')) {
-				$this->template = $this->config->get('config_template') . '/template/payment/paytpv.tpl';
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/paycomet.tpl')) {
+				$this->template = $this->config->get('config_template') . '/template/payment/paycomet.tpl';
 			} else {
 				$this->template = 'default/template/payment/sagepay_direct.tpl';
 			}
@@ -106,28 +106,28 @@ class ControllerPaymentPayTPV extends Controller {
 	}
 
 
-	public function paytpv_iframe_URL(){
+	public function paycomet_iframe_URL(){
 		$this->load->model('checkout/order');
 
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
 		$amount = number_format($this->currency->format($order_info['total'], $order_info['currency_code'], false, false)*100,0, '.', '');
-		$paytpv_client  = $this->config->get('paytpv_client');
-    	$paytpv_terminal  = $this->config->get('paytpv_terminal');
-    	$paytpv_password  = $this->config->get('paytpv_password');
+		$paycomet_client  = $this->config->get('paycomet_client');
+    	$paycomet_terminal  = $this->config->get('paycomet_terminal');
+    	$paycomet_password  = $this->config->get('paycomet_password');
 
-    	$paytpv_client  = $this->config->get('paytpv_client');
-    	$paytpv_terminal  = $this->config->get('paytpv_terminal');
-    	$paytpv_password  = $this->config->get('paytpv_password');
+    	$paycomet_client  = $this->config->get('paycomet_client');
+    	$paycomet_terminal  = $this->config->get('paycomet_terminal');
+    	$paycomet_password  = $this->config->get('paycomet_password');
     	
 
 		$currency_iso_code = $order_info['currency_code'];
 		$language = $this->config->get('config_language');
 
-		$URLKO = HTTPS_SERVER . 'index.php?route=payment/paytpv/paymenterror';
-		$URLOK = HTTPS_SERVER . 'index.php?route=payment/paytpv/paymentreturn';
+		$URLKO = HTTPS_SERVER . 'index.php?route=payment/paycomet/paymenterror';
+		$URLOK = HTTPS_SERVER . 'index.php?route=payment/paycomet/paymentreturn';
 
-		$paytpv_order_ref = $this->session->data['order_id'];
+		$paycomet_order_ref = $this->session->data['order_id'];
 
 		$importe  = number_format($amount/ 100, 2, ".","");
 
@@ -136,15 +136,15 @@ class ControllerPaymentPayTPV extends Controller {
 		$OPERATION = "1";
 		
 		// Cálculo Firma
-		$signature = hash('sha512',$paytpv_client.$paytpv_terminal.$OPERATION.$paytpv_order_ref.$amount.$currency_iso_code.md5($paytpv_password));
+		$signature = hash('sha512',$paycomet_client.$paycomet_terminal.$OPERATION.$paycomet_order_ref.$amount.$currency_iso_code.md5($paycomet_password));
 		$fields = array
 		(
-			'MERCHANT_MERCHANTCODE' => $paytpv_client,
-			'MERCHANT_TERMINAL' => $paytpv_terminal,
+			'MERCHANT_MERCHANTCODE' => $paycomet_client,
+			'MERCHANT_TERMINAL' => $paycomet_terminal,
 			'OPERATION' => $OPERATION,
 			'LANGUAGE' => $language,
 			'MERCHANT_MERCHANTSIGNATURE' => $signature,
-			'MERCHANT_ORDER' => $paytpv_order_ref,
+			'MERCHANT_ORDER' => $paycomet_order_ref,
 			'MERCHANT_AMOUNT' => $amount,
 			'MERCHANT_CURRENCY' => $currency_iso_code,
 			'URLOK' => $URLOK,
@@ -153,14 +153,14 @@ class ControllerPaymentPayTPV extends Controller {
 		);
 		$query = http_build_query($fields);
 		
-		$url_paytpv = $this->url_paytpv . "?".$query;
-		return $url_paytpv;
+		$url_paycomet = $this->url_paycomet . "?".$query;
+		return $url_paycomet;
 	}
 
 	public function isSecureTransaction($importe,$card){
-		$terminales = $this->config->get('paytpv_terminales');
-        $tdfirst = $this->config->get('paytpv_tdfirst');
-        $tdmin = $this->config->get('paytpv_tdmin');
+		$terminales = $this->config->get('paycomet_terminales');
+        $tdfirst = $this->config->get('paycomet_tdfirst');
+        $tdmin = $this->config->get('paycomet_tdmin');
         // Transaccion Segura:
         
         // Si solo tiene Terminal Seguro
@@ -181,7 +181,7 @@ class ControllerPaymentPayTPV extends Controller {
 
     public function isFirstPurchaseToken($customer_id,$card){
     	$customer_id = $this->session->data['customer_id'];
-    	$result = $this->db->query("SELECT * FROM " . DB_PREFIX . "paytpv_order WHERE id_customer = " . $customer_id . " AND paytpv_iduser = ". $card);
+    	$result = $this->db->query("SELECT * FROM " . DB_PREFIX . "paycomet_order WHERE id_customer = " . $customer_id . " AND paycomet_iduser = ". $card);
 		return ($result->num_rows>0)?false:true;
 		
     }
@@ -189,14 +189,14 @@ class ControllerPaymentPayTPV extends Controller {
     public function saveOrderInfo(){
     	$this->load->model('checkout/order');
 
-    	$paytpv_agree = $_POST["paytpv_agree"];
+    	$paycomet_agree = $_POST["paycomet_agree"];
     	$order_id = $_POST["order_id"];
 
     	$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
     	if ($this->session->data['customer_id']==$order_info["customer_id"]){
-    		$this->load->model('payment/paytpv');
-    		$this->model_payment_paytpv->saveOrderInfo($this->customer->getId(),$order_id,$paytpv_agree);
+    		$this->load->model('payment/paycomet');
+    		$this->model_payment_paycomet->saveOrderInfo($this->customer->getId(),$order_id,$paycomet_agree);
     	}   	
     }
 
@@ -213,10 +213,10 @@ class ControllerPaymentPayTPV extends Controller {
 
 	public function callback()
 	{
-		$this->load->model('payment/paytpv');
+		$this->load->model('payment/paycomet');
 		$this->load->model('checkout/order');
 
-		$this->language->load('payment/paytpv');
+		$this->language->load('payment/paycomet');
 
 		$error = false;
 
@@ -228,11 +228,11 @@ class ControllerPaymentPayTPV extends Controller {
 				$result = $this->request->post['Response']=='OK'?1:0;
 				$sign = $this->request->post['ExtendedSignature'];
 				$esURLOK = false;
-				$paytpv_client  = $this->config->get('paytpv_client');
-	    		$paytpv_terminal  = $this->config->get('paytpv_terminal');
-	    		$pass  = $this->config->get('paytpv_password');
+				$paycomet_client  = $this->config->get('paycomet_client');
+	    		$paycomet_terminal  = $this->config->get('paycomet_terminal');
+	    		$pass  = $this->config->get('paycomet_password');
 
-				$local_sign = md5($paytpv_client.$this->request->post['TpvID'].$this->request->post['TransactionType'].$order_id.$this->request->post['Amount'].$this->request->post['Currency'].md5($pass).$this->request->post['BankDateTime'].$this->request->post['Response']);
+				$local_sign = md5($paycomet_client.$this->request->post['TpvID'].$this->request->post['TransactionType'].$order_id.$this->request->post['Amount'].$this->request->post['Currency'].md5($pass).$this->request->post['BankDateTime'].$this->request->post['Response']);
 				
 				// Check Signature
 				if ($sign!=$local_sign)	die('Error 1');
@@ -240,9 +240,9 @@ class ControllerPaymentPayTPV extends Controller {
 				if($result == 1 && isset($this->request->post['IdUser']) && isset($this->request->post['TokenUser'])){
 
 					if ($this->isOpencart2())
-						$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('paytpv_order_status_id'));
+						$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('paycomet_order_status_id'));
 					else
-						$this->model_checkout_order->confirm($order_id, $this->config->get('paytpv_order_status_id'));
+						$this->model_checkout_order->confirm($order_id, $this->config->get('paycomet_order_status_id'));
 
 					if ($this->request->post['TransactionType']==1){
 						$data = array(
@@ -255,10 +255,10 @@ class ControllerPaymentPayTPV extends Controller {
 							'Response'    	=> $result
 						);
 						
-						$this->model_payment_paytpv->updateOrder($data);
+						$this->model_payment_paycomet->updateOrder($data);
 
-						$paytpv_order_info = $this->model_payment_paytpv->getOrderInfo($order_id);
-						$saveCard = $paytpv_order_info["paytpvagree"];
+						$paycomet_order_info = $this->model_payment_paycomet->getOrderInfo($order_id);
+						$saveCard = $paycomet_order_info["paycometagree"];
 
 
 						if ($saveCard && !empty($this->request->post['IdUser']) && !empty($this->request->post['TokenUser'])) {
@@ -267,7 +267,7 @@ class ControllerPaymentPayTPV extends Controller {
 							$order_info = $this->model_checkout_order->getOrder($order_id);
 
 
-							$this->model_payment_paytpv->addCard($this->request->post['IdUser'],$this->request->post['TokenUser'],$result['DS_MERCHANT_PAN'],$result['DS_CARD_BRAND'],"",$order_info["customer_id"]);
+							$this->model_payment_paycomet->addCard($this->request->post['IdUser'],$this->request->post['TokenUser'],$result['DS_MERCHANT_PAN'],$result['DS_CARD_BRAND'],"",$order_info["customer_id"]);
 						}
 						print "Pedido procesado";
 					}else{
@@ -280,14 +280,14 @@ class ControllerPaymentPayTPV extends Controller {
 				$ref = $this->request->post['Order'];
 				$sign = $this->request->post['Signature'];
 				$esURLOK = false;
-				$pass = $this->config->get('paytpv_password');
-				$local_sign = md5($this->config->get('paytpv_client').$this->config->get('paytpv_terminal').$this->request->post['TransactionType'].$ref.$this->request->post['DateTime'].md5($pass));
+				$pass = $this->config->get('paycomet_password');
+				$local_sign = md5($this->config->get('paycomet_client').$this->config->get('paycomet_terminal').$this->request->post['TransactionType'].$ref.$this->request->post['DateTime'].md5($pass));
 				// Check Signature
 				if ($sign!=$local_sign)	die('Error 2');
 				
 				$result = $this->infoUser( $this->request->post['IdUser'],$this->request->post['TokenUser']);
 				
-				$this->model_payment_paytpv->addCard($this->request->post['IdUser'],$this->request->post['TokenUser'],$result['DS_MERCHANT_PAN'],$result['DS_CARD_BRAND'],"",$this->request->post['Order']);
+				$this->model_payment_paycomet->addCard($this->request->post['IdUser'],$this->request->post['TokenUser'],$result['DS_MERCHANT_PAN'],$result['DS_CARD_BRAND'],"",$this->request->post['Order']);
 
 				print "Add User procesado";
 			}
@@ -309,9 +309,9 @@ class ControllerPaymentPayTPV extends Controller {
 	public function directPay()
 	{
 
-		$this->load->model('payment/paytpv');
+		$this->load->model('payment/paycomet');
 		$this->load->model('checkout/order');
-		$this->load->language('payment/paytpv');
+		$this->load->language('payment/paycomet');
 
 		$card = $_POST["card"];
 		$commerce_password = (isset($_POST["commerce_password"]))?$_POST["commerce_password"]:"";
@@ -320,7 +320,7 @@ class ControllerPaymentPayTPV extends Controller {
 
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
-		if ($this->config->get('paytpv_commerce_password')){
+		if ($this->config->get('paycomet_commerce_password')){
 	        if (!$this->validPassword($customer_id,$commerce_password)){
 	        	$json['error'] = $this->language->get('err_commerce_password');
 	        	$this->response->addHeader('Content-Type: application/json');
@@ -331,7 +331,7 @@ class ControllerPaymentPayTPV extends Controller {
 
 		if (isset($this->session->data['order_id']) && $card!=""){
 
-			$card_data = $this->model_payment_paytpv->getCard($this->session->data['customer_id'],$card);
+			$card_data = $this->model_payment_paycomet->getCard($this->session->data['customer_id'],$card);
 			// Si la tarjeta no está asociada al usuario->Error
 			if (empty($card_data)){
 				$json['error'] = $this->language->get('err_card_user');
@@ -345,9 +345,9 @@ class ControllerPaymentPayTPV extends Controller {
 
 				$importe  = number_format($amount/ 100, 2, ".","");
 				
-				$paytpv_client  = $this->config->get('paytpv_client');
-	    		$paytpv_terminal  = $this->config->get('paytpv_terminal');
-	    		$paytpv_password  = $this->config->get('paytpv_password');
+				$paycomet_client  = $this->config->get('paycomet_client');
+	    		$paycomet_terminal  = $this->config->get('paycomet_terminal');
+	    		$paycomet_password  = $this->config->get('paycomet_password');
 	    		$currency_iso_code = $order_info['currency_code'];
 
 
@@ -356,27 +356,27 @@ class ControllerPaymentPayTPV extends Controller {
 	    		if ($secure_pay){
 					$language = $this->config->get('config_language');
 
-					$paytpv_order_ref = $this->session->data['order_id'];
+					$paycomet_order_ref = $this->session->data['order_id'];
 
-					$URLKO = HTTPS_SERVER . 'index.php?route=payment/paytpv/paymenterror';
-					$URLOK = HTTPS_SERVER . 'index.php?route=payment/paytpv/paymentreturn';
+					$URLKO = HTTPS_SERVER . 'index.php?route=payment/paycomet/paymenterror';
+					$URLOK = HTTPS_SERVER . 'index.php?route=payment/paycomet/paymentreturn';
 
 	    			$OPERATION = "109"; //exec_purchase_token
 	    			// Cálculo Firma
-	    			$signature = md5($paytpv_client.$card_data['paytpv_iduser'].$card_data['paytpv_tokenuser'].$paytpv_terminal.$OPERATION.$paytpv_order_ref.$amount.$currency_iso_code.md5($paytpv_password));
+	    			$signature = md5($paycomet_client.$card_data['paycomet_iduser'].$card_data['paycomet_tokenuser'].$paycomet_terminal.$OPERATION.$paycomet_order_ref.$amount.$currency_iso_code.md5($paycomet_password));
 		
 					$fields = array
 					(
-						'MERCHANT_MERCHANTCODE' => $paytpv_client,
-						'MERCHANT_TERMINAL' => $paytpv_terminal,
+						'MERCHANT_MERCHANTCODE' => $paycomet_client,
+						'MERCHANT_TERMINAL' => $paycomet_terminal,
 						'OPERATION' => $OPERATION,
 						'LANGUAGE' => $language,
 						'MERCHANT_MERCHANTSIGNATURE' => $signature,
-						'MERCHANT_ORDER' => $paytpv_order_ref,
+						'MERCHANT_ORDER' => $paycomet_order_ref,
 						'MERCHANT_AMOUNT' => $amount,
 						'MERCHANT_CURRENCY' => $currency_iso_code,
-						'IDUSER' => $card_data['paytpv_iduser'],
-						'TOKEN_USER' => $card_data['paytpv_tokenuser'],
+						'IDUSER' => $card_data['paycomet_iduser'],
+						'TOKEN_USER' => $card_data['paycomet_tokenuser'],
 						'3DSECURE' => 1,
 						'URLOK' => $URLOK,
 						'URLKO' => $URLKO
@@ -384,41 +384,39 @@ class ControllerPaymentPayTPV extends Controller {
 
 					$query = http_build_query($fields);
 					
-					$url_paytpv = $this->url_paytpv . "?".$query;
+					$url_paycomet = $this->url_paycomet . "?".$query;
 
-					$json['ACSURL'] = $url_paytpv;
+					$json['ACSURL'] = $url_paycomet;
 	    		}else{
 
-		    		$charge = $this->executePurchase($card_data['paytpv_iduser'],$card_data['paytpv_tokenuser'],$paytpv_client,$paytpv_terminal,$paytpv_password,$currency_iso_code,$importe,$order_id);
+		    		$charge = $this->executePurchase($card_data['paycomet_iduser'],$card_data['paycomet_tokenuser'],$paycomet_client,$paycomet_terminal,$paycomet_password,$currency_iso_code,$importe,$order_id);
 
 		    		if ( ( int ) $charge[ 'DS_RESPONSE' ] == 1 ) {
 
 		    			if ($this->isOpencart2())
-		    				$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('paytpv_order_status_id'));
+		    				$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('paycomet_order_status_id'));
 		    			else
-		    				$this->model_checkout_order->confirm($order_id, $this->config->get('paytpv_order_status_id'));
+		    				$this->model_checkout_order->confirm($order_id, $this->config->get('paycomet_order_status_id'));
 		    			$OPERATION = "1";
 
 						$data = array(
 							'Order'       	=> $order_id,
-							'IdUser'       	=> $card_data['paytpv_iduser'],
-							'TokenUser' 	=> $card_data['paytpv_tokenuser'],
+							'IdUser'       	=> $card_data['paycomet_iduser'],
+							'TokenUser' 	=> $card_data['paycomet_tokenuser'],
 							'TransactionType'   => $OPERATION,
 							'AuthCode'      => $charge['DS_MERCHANT_AUTHCODE'],
 							'Amount'      	=> $importe,
 							'Response'    	=> $charge['DS_RESPONSE']
 						);
 						
-						$this->model_payment_paytpv->updateOrder($data);
+						$this->model_payment_paycomet->updateOrder($data);
 
 						$json['redirect']  = $this->url->link('checkout/success', '', 'SSL');
 						
 					}else{
 
 						$json['error']  = $this->language->get('err_error') . $charge['DS_ERROR_ID'];
-
-						$this->response->redirect($this->url->link('checkout/checkout', '', 'SSL'));
-					}
+						$json['redirect']  = $this->url->link('checkout/checkout', '', 'SSL');                        					}
 				}
 			}
 		
@@ -442,11 +440,11 @@ class ControllerPaymentPayTPV extends Controller {
 
     private function infoUser($DS_IDUSER, $DS_TOKEN_USER)
     {
-        $this->load->model('payment/paytpv');
+        $this->load->model('payment/paycomet');
 
-        $DS_MERCHANT_MERCHANTCODE = $this->config->get('paytpv_client');
-        $DS_MERCHANT_TERMINAL = $this->config->get('paytpv_terminal');
-        $DS_MERCHANT_PASSWORD = $this->config->get('paytpv_password');
+        $DS_MERCHANT_MERCHANTCODE = $this->config->get('paycomet_client');
+        $DS_MERCHANT_TERMINAL = $this->config->get('paycomet_terminal');
+        $DS_MERCHANT_PASSWORD = $this->config->get('paycomet_password');
         $DS_MERCHANT_MERCHANTSIGNATURE = sha1($DS_MERCHANT_MERCHANTCODE . $DS_IDUSER . $DS_TOKEN_USER . $DS_MERCHANT_TERMINAL . $DS_MERCHANT_PASSWORD);
         
         return $this->getClient()->info_user(
@@ -454,17 +452,17 @@ class ControllerPaymentPayTPV extends Controller {
     }
 
 
-    private function executePurchase($paytpv_iduser, $paytpv_tokenuser, $paytpv_client,$paytpv_terminal,$paytpv_password,$currency_iso_code,$importe,$orderid)
+    private function executePurchase($paycomet_iduser, $paycomet_tokenuser, $paycomet_client,$paycomet_terminal,$paycomet_password,$currency_iso_code,$importe,$orderid)
     {
         
-        $DS_MERCHANT_MERCHANTCODE = $paytpv_client;
-        $DS_IDUSER = $paytpv_iduser;
-        $DS_TOKEN_USER = $paytpv_tokenuser;
+        $DS_MERCHANT_MERCHANTCODE = $paycomet_client;
+        $DS_IDUSER = $paycomet_iduser;
+        $DS_TOKEN_USER = $paycomet_tokenuser;
         $DS_MERCHANT_AMOUNT = round($importe * 100);
         $DS_MERCHANT_ORDER = $orderid;
         $DS_MERCHANT_CURRENCY = $currency_iso_code;
-        $DS_MERCHANT_TERMINAL = $paytpv_terminal;
-        $DS_MERCHANT_MERCHANTSIGNATURE = sha1($DS_MERCHANT_MERCHANTCODE . $DS_IDUSER . $DS_TOKEN_USER . $DS_MERCHANT_TERMINAL . $DS_MERCHANT_AMOUNT . $DS_MERCHANT_ORDER . $paytpv_password);
+        $DS_MERCHANT_TERMINAL = $paycomet_terminal;
+        $DS_MERCHANT_MERCHANTSIGNATURE = sha1($DS_MERCHANT_MERCHANTCODE . $DS_IDUSER . $DS_TOKEN_USER . $DS_MERCHANT_TERMINAL . $DS_MERCHANT_AMOUNT . $DS_MERCHANT_ORDER . $paycomet_password);
         $DS_ORIGINAL_IP = $_SERVER['REMOTE_ADDR'];
         $DS_MERCHANT_PRODUCTDESCRIPTION = $orderid;
         $DS_MERCHANT_OWNER = '';

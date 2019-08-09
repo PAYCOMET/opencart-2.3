@@ -1,14 +1,10 @@
 <?php echo $header; ?>
-<?php if ($success) { ?>
-<div class="success"><?php echo $success; ?></div>
-<?php } ?>
-<?php echo $column_left; ?><?php echo $column_right; ?>
 <div class="container">
-  <div class="breadcrumb">
+  <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-    <?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+    <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
     <?php } ?>
-  </div>
+  </ul>
   <?php if ($success) { ?>
   <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?></div>
   <?php } ?>
@@ -25,23 +21,23 @@
     <?php } ?>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
       <h1><?php echo $heading_title; ?></h1>
-      <div class="content">
-        <table width="100%" class="table table-bordered table-hover">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
-              <td width="20%" class="text-left"><?php echo $column_type; ?></td>
-              <td width="20%" class="text-left"><?php echo $column_digits; ?></td>
-              <td width="60%" class="text-left"><?php echo $column_action; ?></td>
+              <td class="text-left"><?php echo $column_type; ?></td>
+              <td class="text-left"><?php echo $column_digits; ?></td>
+              <td class="text-left"><?php echo $column_action; ?></td>
             </tr>
           </thead>
           <tbody>
             <?php if ($cards) { ?>
             <?php foreach ($cards  as $card) { ?>
             <tr>
-              <td width="20%" class="text-left"><?php echo $card['paytpv_brand']; ?></td>
-              <td width="20%" class="text-left"><?php echo $card['paytpv_cc']; ?></td>
+              <td class="text-left"><?php echo $card['paycomet_brand']; ?></td>
+              <td class="text-left"><?php echo $card['paycomet_cc']; ?></td>
               
-			        <td width="60%" class="text-right"><a href="<?php echo $delete . $card['paytpv_iduser']; ?>" class="btn btn-danger"><?php echo $button_delete; ?></a></td>
+			        <td class="text-right"><a href="<?php echo $delete . $card['paycomet_iduser']; ?>" class="btn btn-danger"><?php echo $button_delete; ?></a></td>
 
             </tr>
             <?php } ?>
@@ -53,12 +49,13 @@
           </tbody>
         </table>
       </div>
-    
-
-   
-	  <div class="buttons">
-        <div class="left"><a href="<?php echo $back; ?>" class="button"><?php echo $button_back; ?></a></div>
-        <div class="right"><a href="<?php echo $add; ?>" class="button"><?php echo $button_new_card; ?></a></div>
+      <div class="row">
+       
+        <div class="col-sm-6 text-right"><?php echo $results; ?></div>
+      </div>
+	  <div class="buttons clearfix">
+        <div class="pull-left"><a href="<?php echo $back; ?>" class="btn btn-default"><?php echo $button_back; ?></a></div>
+        <div class="pull-right"><a href="<?php echo $add; ?>" class="btn btn-primary"><?php echo $button_new_card; ?></a></div>
       </div>
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>

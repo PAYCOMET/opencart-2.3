@@ -1,6 +1,6 @@
 <fieldset>
   <legend><?php echo $text_transaction; ?></legend>
-  <div id="paytpv-transaction"></div>
+  <div id="paycomet-transaction"></div>
 </fieldset>
 
 <fieldset>
@@ -12,17 +12,17 @@
     </tr>
     <tr>
       <td><?php echo $text_amount_captured; ?></td>
-      <td id="paytpv-captured"><?php echo $captured; ?></td>
+      <td id="paycomet-captured"><?php echo $captured; ?></td>
     </tr>
     <tr>
       <td><?php echo $text_amount_refunded; ?></td>
-      <td id="paytpv-refund"><?php echo $refunded; ?></td>
+      <td id="paycomet-refund"><?php echo $refunded; ?></td>
     </tr>
   </table>
 </fieldset>
 
 <script type="text/javascript"><!--
-	$('#paytpv-transaction').load('index.php?route=payment/paytpv/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
+	$('#paycomet-transaction').load('index.php?route=payment/paycomet/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
 
 	function refund(totalRefund=0) {
 	  var amount = $('input[name="amount"]').val();
@@ -31,7 +31,7 @@
 	    type: 'POST',
 	    dataType: 'json',
 	    data: {'order_id': '<?php echo $order_id; ?>', 'amount': amount, 'totalRefund': totalRefund},
-	    url: 'index.php?route=payment/paytpv/dorefund&token=<?php echo $token; ?>',
+	    url: 'index.php?route=payment/paycomet/dorefund&token=<?php echo $token; ?>',
 
 	    beforeSend: function () {
 	      button = (totalRefund==0)?"button-refund":"button-total-refund";
@@ -44,8 +44,8 @@
 	      if (!data.error) {
 	        alert(data.success);
 	        $('input[name="amount"]').val('0.00');
-	        $('#paytpv-transaction').load('index.php?route=payment/paytpv/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
-	        $('#paytpv-refund').text(data.total_refunded);
+	        $('#paycomet-transaction').load('index.php?route=payment/paycomet/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
+	        $('#paycomet-refund').text(data.total_refunded);
 	      }
 
 	      if (data.error) {
@@ -57,7 +57,7 @@
 	  });
 	}
 
-	$('#paytpv-transaction').delegate('button', 'click', function() {
+	$('#paycomet-transaction').delegate('button', 'click', function() {
 		
 		var element = this;
 
@@ -74,11 +74,11 @@
 				$('.alert').remove();
 
 				if (json['error']) {
-					$('#tab-paytpv').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					$('#tab-paycomet').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 				}
 
 				if (json['success']) {
-					$('#paytpv-transaction').load('index.php?route=payment/paytpv/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
+					$('#paycomet-transaction').load('index.php?route=payment/paycomet/transaction&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
 				}
 			}
 		});

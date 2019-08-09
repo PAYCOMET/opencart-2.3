@@ -5,7 +5,7 @@ $_['heading_title']      = 'PAYCOMET';
 // Text 
 $_['text_payment']       = 'Payment';
 $_['text_success']		 = 'Success: You have modified PAYCOMET account details!';
-$_['text_paytpv']      	 = '<a onclick="window.open(\'https://www.paycomet.com\');"><img src="view/image/payment/paycomet.png" alt="PAYCOMET" title="PAYCOMET" style="border: 1px solid #EEEEEE;" /></a>';
+$_['text_paycomet']      	 = '<a onclick="window.open(\'https://www.paycomet.com\');"><img src="view/image/payment/paycomet.png" alt="PAYCOMET" title="PAYCOMET" style="border: 1px solid #EEEEEE;" /></a>';
 	
 $_['text_secure'] = "Secure";
 $_['text_nosecure'] = "Non-Secure";

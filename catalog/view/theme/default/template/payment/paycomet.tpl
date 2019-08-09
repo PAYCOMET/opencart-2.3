@@ -8,7 +8,7 @@
   }
 ?>
 <div id="saved_cards" style="">
-    <form class="form" name="form_paytpv" id="form_paytpv">
+    <form class="form" name="form_paycomet" id="form_paycomet">
         <div class="form-group">
             <label for="card"><?php print $text_credit_cards;?>:</label>
             <select name="card" id="card" onChange="checkCard()" class="form-control">
@@ -16,10 +16,10 @@
                 print "<option value='0'>".strtoupper($text_new_card)."</option>";
                 foreach ($saved_cards as $key=>$saved_card){
                   $selected = ($key==sizeof($saved_cards)-1)?"selected":"";
-                  $desc = $saved_card["paytpv_cc"];
+                  $desc = $saved_card["paycomet_cc"];
                   if ($saved_card["card_desc"]!="")
                     $desc .= "- " . $saved_card["card_desc"];
-                  print "<option value='".$saved_card["paytpv_iduser"]."' $selected>".$desc."</option>";
+                  print "<option value='".$saved_card["paycomet_iduser"]."' $selected>".$desc."</option>";
                 }
                 ?>
             </select>
@@ -35,7 +35,7 @@
 
             if (sizeof($saved_cards)>0){
               print '<div class="direct_pay_button">';
-                if ($paytpv_commerce_password){
+                if ($paycomet_commerce_password){
                   print '<div class="form-group">';
                     print "<label for='commerce_password'>".$text_commerce_password."</label>";
                     // Pago directo
@@ -58,12 +58,12 @@
 
 
 
-<div id="paytpv_iframe" style="<?php print $display_iframe;?>">
+<div id="paycomet_iframe" style="<?php print $display_iframe;?>">
 
   <h6><?php print $text_streamline;?></h4>
   <div class="checkbox"><label for="savecard" class="checkbox"><input type="checkbox" name="savecard" id="savecard" onChange="saveOrderInfoJQ(<?php print $order_id;?>)" checked><?php print $txt_remember;?><a id="open_conditions" class="open_conditions" href="#conditions"><?php print $txt_terms;?></a>.</label></div>
 
-  <iframe id="paytpv_iframe2" src="<?php echo $paytpv_iframe; ?>" name="paytpv" style="width: 670px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 322px;" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+  <iframe id="paycomet_iframe2" src="<?php echo $paycomet_iframe; ?>" name="paycomet" style="width: 670px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 322px;" marginheight="0" marginwidth="0" scrolling="no"></iframe>
 
 </div>
 
@@ -143,9 +143,9 @@ $(document).ready(function() {
       event.preventDefault();
       
       $.ajax({
-        url: 'index.php?route=payment/paytpv/directpay',
+        url: 'index.php?route=payment/paycomet/directpay',
         type: 'post',
-        data: $("#form_paytpv").serialize(),
+        data: $("#form_paycomet").serialize(),
         dataType: 'json',
         cache: false,
       beforeSend: function() {
@@ -162,7 +162,7 @@ $(document).ready(function() {
             html = '<form action="' + json['ACSURL'] + '" method="post" id="3dauth">';
             html += '</form>';
 
-            $('#paytpv_iframe').after(html);
+            $('#paycomet_iframe').after(html);
 
             $('#3dauth').submit();
           }
@@ -183,23 +183,23 @@ $(document).ready(function() {
 
 function checkCard(){
   if ($("#card").val()>0){
-      $("#paytpv_iframe").hide();
+      $("#paycomet_iframe").hide();
       $(".direct_pay_button").show();
   }else{
-    $("#paytpv_iframe").show();
+    $("#paycomet_iframe").show();
     $(".direct_pay_button").hide();
   }
 }
 
 function saveOrderInfoJQ(order_id){
     
-  paytpv_agree = $("#savecard").is(':checked')?1:0;
+  paycomet_agree = $("#savecard").is(':checked')?1:0;
 
   $.ajax({
-      url: 'index.php?route=payment/paytpv/saveOrderInfo',
+      url: 'index.php?route=payment/paycomet/saveOrderInfo',
       type: "POST",
       data: {
-          'paytpv_agree': paytpv_agree,
+          'paycomet_agree': paycomet_agree,
           'order_id' : order_id,
           'ajax': true
       },

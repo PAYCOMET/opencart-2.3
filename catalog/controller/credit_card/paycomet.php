@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-class ControllerCreditCardPayTpv extends Controller {
+class ControllerCreditCardPayComet extends Controller {
 	public function index() {
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/account', '', true);
@@ -11,9 +11,9 @@ class ControllerCreditCardPayTpv extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
-		$this->load->language('credit_card/paytpv');
+		$this->load->language('credit_card/paycomet');
 
-		$this->load->model('payment/paytpv');
+		$this->load->model('payment/paycomet');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -61,8 +61,8 @@ class ControllerCreditCardPayTpv extends Controller {
 		$data['button_back'] = $this->language->get('button_back');
 
 		
-		$data['cards'] = $this->model_payment_paytpv->getCards($this->customer->getId());
-		$data['delete'] = $this->url->link('credit_card/paytpv/delete', 'card_id=', true);
+		$data['cards'] = $this->model_payment_paycomet->getCards($this->customer->getId());
+		$data['delete'] = $this->url->link('credit_card/paycomet/delete', 'card_id=', true);
 
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
@@ -76,14 +76,14 @@ class ControllerCreditCardPayTpv extends Controller {
 		$pagination->total = $cards_total;
 		$pagination->page = $page;
 		$pagination->limit = 10;
-		$pagination->url = $this->url->link('credit_card/paytpv', 'page={page}', true);
+		$pagination->url = $this->url->link('credit_card/paycomet', 'page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($cards_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($cards_total - 10)) ? $cards_total : ((($page - 1) * 10) + 10), $cards_total, ceil($cards_total / 10));
 		
 		$data['back'] = $this->url->link('account/account', '', true);
-		$data['add'] = $this->url->link('credit_card/paytpv/add', '', true);
+		$data['add'] = $this->url->link('credit_card/paycomet/add', '', true);
 
 		// Add Agree
 		
@@ -96,10 +96,10 @@ class ControllerCreditCardPayTpv extends Controller {
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paytpv_list.tpl')) {
-				$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/credit_card/paytpv_list.tpl', $data));
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paycomet_list.tpl')) {
+				$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/credit_card/paycomet_list.tpl', $data));
 			} else {
-				$this->response->setOutput($this->load->view('credit_card/paytpv_list.tpl', $data));
+				$this->response->setOutput($this->load->view('credit_card/paycomet_list.tpl', $data));
 			}
 		}else{
 
@@ -113,10 +113,10 @@ class ControllerCreditCardPayTpv extends Controller {
 			);
 
 
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paytpv_list_1.tpl')) {
-				$this->template = $this->config->get('config_template') . '/template/credit_card/paytpv_list_1.tpl';
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paycomet_list_1.tpl')) {
+				$this->template = $this->config->get('config_template') . '/template/credit_card/paycomet_list_1.tpl';
 			} else {
-				$this->template = 'default/template/credit_card/paytpv_list_1.tpl';
+				$this->template = 'default/template/credit_card/paycomet_list_1.tpl';
 			}
 			$this->data = $data;
 			$this->response->setOutput($this->render());
@@ -132,9 +132,9 @@ class ControllerCreditCardPayTpv extends Controller {
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
-		$this->load->language('credit_card/paytpv');
+		$this->load->language('credit_card/paycomet');
 
-		$this->load->model('payment/paytpv');
+		$this->load->model('payment/paycomet');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -182,10 +182,10 @@ class ControllerCreditCardPayTpv extends Controller {
 
 		$data['button_back'] = $this->language->get('button_back');
 		$data['button_add_card'] = $this->language->get('button_add_card');
-		$data['back'] = $this->url->link('credit_card/paytpv', '', true);
-		$data['add'] = $this->url->link('credit_card/paytpv/addCard', '', true);
+		$data['back'] = $this->url->link('credit_card/paycomet', '', true);
+		$data['add'] = $this->url->link('credit_card/paycomet/addCard', '', true);
 
-		$data['txt_url_paytpv'] = $this->paytpv_iframe_URL();
+		$data['txt_url_paycomet'] = $this->paycomet_iframe_URL();
 
 		if ($this->isOpencart2()){
 
@@ -196,10 +196,10 @@ class ControllerCreditCardPayTpv extends Controller {
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paytpv_form.tpl')) {
-				$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/credit_card/paytpv_form.tpl', $data));
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paycomet_form.tpl')) {
+				$this->response->setOutput($this->load->view($this->config->get('config_template') . '/template/credit_card/paycomet_form.tpl', $data));
 			} else {
-				$this->response->setOutput($this->load->view('credit_card/paytpv_form.tpl', $data));
+				$this->response->setOutput($this->load->view('credit_card/paycomet_form.tpl', $data));
 			}
 		}else{
 
@@ -217,10 +217,10 @@ class ControllerCreditCardPayTpv extends Controller {
 			);
 
 
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paytpv_form.tpl')) {
-				$this->template = $this->config->get('config_template') . '/template/credit_card/paytpv_form.tpl';
+			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/credit_card/paycomet_form.tpl')) {
+				$this->template = $this->config->get('config_template') . '/template/credit_card/paycomet_form.tpl';
 			} else {
-				$this->template = 'default/template/credit_card/paytpv_form.tpl';
+				$this->template = 'default/template/credit_card/paycomet_form.tpl';
 			}
 			$this->data = $data;
 			$this->response->setOutput($this->render());
@@ -228,57 +228,57 @@ class ControllerCreditCardPayTpv extends Controller {
 	}
 
 
-	public function paytpv_iframe_URL(){
-		$this->load->model('payment/paytpv');
+	public function paycomet_iframe_URL(){
+		$this->load->model('payment/paycomet');
 
-		$paytpv_client  = $this->config->get('paytpv_client');
-    	$paytpv_terminal  = $this->config->get('paytpv_terminal');
-    	$paytpv_password  = $this->config->get('paytpv_password');
+		$paycomet_client  = $this->config->get('paycomet_client');
+    	$paycomet_terminal  = $this->config->get('paycomet_terminal');
+    	$paycomet_password  = $this->config->get('paycomet_password');
 
 		$language = $this->language->get('code');
 
-		$URLKO = $this->url->link('credit_card/paytpv', '', true);
-		$URLOK = $this->url->link('credit_card/paytpv', '', true);
+		$URLKO = $this->url->link('credit_card/paycomet', '', true);
+		$URLOK = $this->url->link('credit_card/paycomet', '', true);
 
-		$paytpv_order_ref = $this->customer->getId();
+		$paycomet_order_ref = $this->customer->getId();
 
 		$OPERATION = "1";
 	
 		$operation = 107;
 
 		// Cálculo Firma
-		$signature = md5($paytpv_client.$paytpv_terminal.$operation.$paytpv_order_ref.md5($paytpv_password));
+		$signature = md5($paycomet_client.$paycomet_terminal.$operation.$paycomet_order_ref.md5($paycomet_password));
 		$fields = array
 		(
-			'MERCHANT_MERCHANTCODE' => $paytpv_client,
-			'MERCHANT_TERMINAL' => $paytpv_terminal,
+			'MERCHANT_MERCHANTCODE' => $paycomet_client,
+			'MERCHANT_TERMINAL' => $paycomet_terminal,
 			'OPERATION' => $operation,
 			'LANGUAGE' => $language,
 			'MERCHANT_MERCHANTSIGNATURE' => $signature,
-			'MERCHANT_ORDER' => $paytpv_order_ref,
+			'MERCHANT_ORDER' => $paycomet_order_ref,
 			'URLOK' => $URLOK,
 		    'URLKO' => $URLKO,
 		    '3DSECURE' => 1
 		);
 		$query = http_build_query($fields);
 
-		$url_paytpv = $this->model_payment_paytpv->gerUrlPAYTPV() . "?".$query;
-		return $url_paytpv;
+		$url_paycomet = $this->model_payment_paycomet->gerUrlPAYCOMET() . "?".$query;
+		return $url_paycomet;
 	}
 
 	public function delete() {
-		$this->load->language('credit_card/paytpv');
-		$this->load->model('payment/paytpv');
+		$this->load->language('credit_card/paycomet');
+		$this->load->model('payment/paycomet');
 
-		$card = $this->model_payment_paytpv->getCard($this->customer->getId(),$this->request->get['card_id']);
+		$card = $this->model_payment_paycomet->getCard($this->customer->getId(),$this->request->get['card_id']);
 
-		if (!empty($card['paytpv_iduser'])) {
-			$this->model_payment_paytpv->deleteCard($this->request->get['card_id']);
+		if (!empty($card['paycomet_iduser'])) {
+			$this->model_payment_paycomet->deleteCard($this->request->get['card_id']);
 			$this->session->data['success'] = $this->language->get('text_success_card');
 		} else {
 			$this->session->data['error_warning'] = $this->language->get('text_fail_card');
 		}
-		$this->response->redirect($this->url->link('credit_card/paytpv', '', true));
+		$this->response->redirect($this->url->link('credit_card/paycomet', '', true));
 	}
 
 	  /**

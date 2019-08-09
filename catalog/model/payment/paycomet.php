@@ -1,10 +1,10 @@
 <?php
-class ModelPaymentPayTPV extends Model {
+class ModelPaymentPayCOMET extends Model {
 
-    public $url_paytpv = "https://api.paycomet.com/gateway/bnkgateway.php";
+    public $url_paycomet = "https://api.paycomet.com/gateway/bnkgateway.php";
 
     public function getMethod($address, $total) {
-      $this->load->language('payment/paytpv');
+      $this->load->language('payment/paycomet');
 
       
       $method_data = array();
@@ -13,67 +13,67 @@ class ModelPaymentPayTPV extends Model {
 
       if ($status) {
         $method_data = array(
-          'code'       => 'paytpv',
+          'code'       => 'paycomet',
           'title'      => $this->language->get('text_title'),
           'terms'      => '',
-          'sort_order' => $this->config->get('paytpv_sort_order')
+          'sort_order' => $this->config->get('paycomet_sort_order')
         );
       }
 
       return $method_data;
     }
 
-    public function gerUrlPAYTPV(){
-      return $this->url_paytpv;
+    public function gerUrlPAYCOMET(){
+      return $this->url_paycomet;
     }
 
     public function getCards($customer_id) {
 
-      $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "paytpv_customer WHERE id_customer = '" . (int)$customer_id . "'");
+      $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "paycomet_customer WHERE id_customer = '" . (int)$customer_id . "'");
 
       $card_data = array();
 
       foreach ($query->rows as $row) {
 
         $card_data[] = array(
-          'paytpv_iduser' => $row['paytpv_iduser'],
-          'paytpv_tokenuser' => $row['paytpv_tokenuser'],
-          'paytpv_cc' => $row['paytpv_cc'],
-          'paytpv_brand' => $row['paytpv_cc'],
+          'paycomet_iduser' => $row['paycomet_iduser'],
+          'paycomet_tokenuser' => $row['paycomet_tokenuser'],
+          'paycomet_cc' => $row['paycomet_cc'],
+          'paycomet_brand' => $row['paycomet_cc'],
           'card_desc' => $row['card_desc']
         );
       }
       return $card_data;
     }
 
-    public function getCard($customer_id,$paytpv_iduser) {
+    public function getCard($customer_id,$paycomet_iduser) {
 
-      $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "paytpv_customer WHERE id_customer = '" . (int)$customer_id . "' and paytpv_iduser=". $paytpv_iduser);
+      $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "paycomet_customer WHERE id_customer = '" . (int)$customer_id . "' and paycomet_iduser=". $paycomet_iduser);
 
       $card_data = array();
 
       foreach ($query->rows as $row) {
 
         $card_data = array(
-          'paytpv_iduser' => $row['paytpv_iduser'],
-          'paytpv_tokenuser' => $row['paytpv_tokenuser'],
-          'paytpv_cc' => $row['paytpv_cc'],
-          'paytpv_brand' => $row['paytpv_cc'],
+          'paycomet_iduser' => $row['paycomet_iduser'],
+          'paycomet_tokenuser' => $row['paycomet_tokenuser'],
+          'paycomet_cc' => $row['paycomet_cc'],
+          'paycomet_brand' => $row['paycomet_cc'],
           'card_desc' => $row['card_desc']
         );
       }
       return $card_data;
     }
 
-    public function saveOrderInfo($customer_id,$order_id,$paytpv_agree){
+    public function saveOrderInfo($customer_id,$order_id,$paycomet_agree){
 
-      $this->db->query("UPDATE " . DB_PREFIX . "paytpv_order SET paytpvagree = " . $paytpv_agree . " where order_id=" . $order_id);
+      $this->db->query("UPDATE " . DB_PREFIX . "paycomet_order SET paycometagree = " . $paycomet_agree . " where order_id=" . $order_id);
 
     }
 
     public function getOrderInfo($order_id){
 
-      $query= $this->db->query("SELECT * FROM " . DB_PREFIX . "paytpv_order where order_id = " . $order_id);
+      $query= $this->db->query("SELECT * FROM " . DB_PREFIX . "paycomet_order where order_id = " . $order_id);
       $row = current($query->rows);
       return $row;
 
@@ -82,9 +82,9 @@ class ModelPaymentPayTPV extends Model {
     public function updateOrder($data){
 
       $this->db->query("
-        UPDATE `" . DB_PREFIX . "paytpv_order`
-        SET `paytpv_iduser` = '" . $this->db->escape($data['IdUser']) . "',
-          `paytpv_tokenuser` = '" . $this->db->escape($data['TokenUser']) . "',
+        UPDATE `" . DB_PREFIX . "paycomet_order`
+        SET `paycomet_iduser` = '" . $this->db->escape($data['IdUser']) . "',
+          `paycomet_tokenuser` = '" . $this->db->escape($data['TokenUser']) . "',
           `transaction_type` = '" . $this->db->escape($data['TransactionType']) . "',
           `authcode` = '" . $this->db->escape($data['AuthCode']) . "',
           `amount` = '" . $this->db->escape($data['Amount']) . "',
@@ -95,19 +95,19 @@ class ModelPaymentPayTPV extends Model {
 
     }
 
-    public function addCard($paytpv_iduser,$paytpv_tokenuser,$paytpv_cc,$paytpv_brand,$paytpv_carddesc,$id_customer) {
-      $paytpv_cc = '************' . substr($paytpv_cc, -4);
-      $card_data = $this->getCard($id_customer,$paytpv_iduser);
+    public function addCard($paycomet_iduser,$paycomet_tokenuser,$paycomet_cc,$paycomet_brand,$paycomet_carddesc,$id_customer) {
+      $paycomet_cc = '************' . substr($paycomet_cc, -4);
+      $card_data = $this->getCard($id_customer,$paycomet_iduser);
       if (empty($card_data))
-        $this->db->query("INSERT INTO " . DB_PREFIX . "paytpv_customer SET id_customer = '" . $id_customer . "', paytpv_iduser = '" . $paytpv_iduser . "', paytpv_tokenuser = '" . $paytpv_tokenuser . "', paytpv_cc = '" . $paytpv_cc . "', paytpv_brand = '" . $paytpv_brand . "', card_desc = '" . $paytpv_carddesc.  "', date = '" . date('Y-m-d H:i:s') . "'");
+        $this->db->query("INSERT INTO " . DB_PREFIX . "paycomet_customer SET id_customer = '" . $id_customer . "', paycomet_iduser = '" . $paycomet_iduser . "', paycomet_tokenuser = '" . $paycomet_tokenuser . "', paycomet_cc = '" . $paycomet_cc . "', paycomet_brand = '" . $paycomet_brand . "', card_desc = '" . $paycomet_carddesc.  "', date = '" . date('Y-m-d H:i:s') . "'");
     }
 
     public function addOrderAgree($order_id,$customer_id) {
-      $this->db->query("INSERT INTO `" . DB_PREFIX . "paytpv_order` SET `order_id` = '" . (int)$order_id . "', id_customer = '" . (int)$customer_id . "'");
+      $this->db->query("INSERT INTO `" . DB_PREFIX . "paycomet_order` SET `order_id` = '" . (int)$order_id . "', id_customer = '" . (int)$customer_id . "'");
     }
 
-    public function deleteCard($paytpv_iduser) {
-      $this->db->query("DELETE FROM " . DB_PREFIX . "paytpv_customer WHERE paytpv_iduser = '" . (int)$paytpv_iduser . "'");
+    public function deleteCard($paycomet_iduser) {
+      $this->db->query("DELETE FROM " . DB_PREFIX . "paycomet_customer WHERE paycomet_iduser = '" . (int)$paycomet_iduser . "'");
     }
 
 

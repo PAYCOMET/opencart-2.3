@@ -1,0 +1,149 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-paycomet" class="form-horizontal">
+                     <input type="hidden" name="payment_paycomet_card" value="1" />
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_paycomet_status" id="input-status" class="form-control">
+                                {% if payment_paycomet_status %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_client"><span data-toggle="tooltip" title="{{ help_client }}">{{ entry_client }}</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_paycomet_client" id="payment_paycomet_client" value="{{ payment_paycomet_client }}" placeholder="{{ entry_client }}" class="form-control"/>
+                            {% if (error_client) %}
+                                <div class="text-danger">{{ error_client }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_terminal"><span data-toggle="tooltip" title="{{ help_terminal }}">{{ entry_terminal }}</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_paycomet_terminal" id="payment_paycomet_terminal" value="{{ payment_paycomet_terminal }}" placeholder="{{ entry_terminal }}" class="form-control"/>
+                            {% if (error_terminal) %}
+                                <div class="text-danger">{{ error_terminal }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_password"><span data-toggle="tooltip" title="{{ help_password }}">{{ entry_password }}</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_paycomet_password" id="payment_paycomet_password" value="{{ payment_paycomet_password }}"  placeholder="{{ entry_password }}" class="form-control"/>
+                            {% if (error_password) %}
+                                <div class="text-danger">{{ error_password }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_terminales">{{ entry_terminales }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_paycomet_terminales" id="payment_paycomet_terminales" class="form-control" onChange="checkTerminales();">
+                                <option value="0" selected="selected" {% if (payment_paycomet_terminales == 0) %} {{ "selected='selected'" }}{% endif %}>{{ text_secure }}</option>
+                                <option value="1" {% if (payment_paycomet_terminales == 1) %} {{ "selected='selected'" }}{% endif %}>{{ text_nosecure }}</option>
+                                <option value="2" {% if (payment_paycomet_terminales == 2) %} {{ "selected='selected'" }}{% endif %}>{{ text_both }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group paycomet_tdfirst">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_tdfirst"><span data-toggle="tooltip" title="{{ help_tdfirst }}">{{ entry_tdfirst }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_paycomet_tdfirst" id="payment_paycomet_tdfirst" class="form-control">
+                                <option value="0" {% if (payment_paycomet_tdfirst == 0) %} {{ "selected" }}{% endif %}>{{ text_no }}</option>
+                                <option value="1" {% if (payment_paycomet_tdfirst == 1) %} {{ "selected" }}{% endif %}>{{ text_yes }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group paycomet_tdmin">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_tdmin"><span data-toggle="tooltip" title="{{ help_tdmin }}">{{ entry_tdmin }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_paycomet_tdmin" id="payment_paycomet_tdmin" value="{{ payment_paycomet_tdmin }}"  placeholder="{{ entry_tdmin }}"  class="form-control"/>
+                            {% if (error_tdmin) %}
+                                <div class="text-danger">{{ error_tdmin }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group paycomet_commerce_password">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_commerce_password"><span data-toggle="tooltip" title="{{ help_commerce_password }}">{{ entry_commerce_password }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_paycomet_commerce_password" id="payment_paycomet_commerce_password" class="form-control">
+                                <option value="0" {% if (payment_paycomet_commerce_password == 0) %} {{ "selected" }}{% endif %}>{{ text_no }}</option>
+                                <option value="1" {% if (payment_paycomet_commerce_password == 1) %} {{ "selected" }}{% endif %}>{{ text_yes }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_order_status_id">{{ entry_order_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="payment_paycomet_order_status_id" id="payment_paycomet_order_status_id" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if (order_status['order_status_id'] == payment_paycomet_order_status_id) %}
+                                        <option value="{{ order_status['order_status_id'] }}" selected="selected">{{ order_status['name'] }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status['order_status_id'] }}">{{ order_status['name'] }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="payment_paycomet_sort_order">{{ entry_sort_order }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_paycomet_sort_order" id="payment_paycomet_sort_order" value="{{ payment_paycomet_sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        checkTerminales();
+    });
+
+    function checkTerminales(){
+        if ($("#payment_paycomet_terminales").val()==2){
+            $(".paycomet_tdmin,.paycomet_tdfirst").show();
+        }else{
+            $(".paycomet_tdmin,.paycomet_tdfirst").hide();
+        }
+    }
+
+</script>
+{{ footer }}

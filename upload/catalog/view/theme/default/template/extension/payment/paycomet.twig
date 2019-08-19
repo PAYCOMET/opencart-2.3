@@ -1,0 +1,178 @@
+{% set display_iframe = (saved_cards|length == 0)? "display:none":"" %}
+{% set display_savecards = (show_savecard == 0)? "display:none":"" %}
+<div id="saved_cards" style="{{ display_iframe }}">
+    <form class="form" name="form_paycomet" id="form_paycomet">
+        
+        <div class="form-group">
+            <label for="card">{{ text_credit_cards }}:</label>
+            <select name="card" id="card" onChange="checkCard()" class="form-control">
+                <option value='0'>{{ text_new_card|upper }}</option>
+                {% for key,saved_card in saved_cards %}
+                    {% set selected = (key == saved_cards|length -1) ? "selected": "" %}
+                    {% set desc = saved_card["paycomet_cc"] %}
+                    {% if (saved_card.card_desc != "") %}
+                        {% set desc = desc ~ saved_card.card_desc  %}
+                    {% endif %}
+                    <option value='{{ saved_card.paycomet_iduser }}' {{ selected }}>{{ desc }}</option>
+                {% endfor %}
+            </select>
+            {% set display_iframe = (saved_cards|length > 0)? "display:none":"" %}
+        </div>
+
+        {% if (saved_cards|length > 0) %}
+        <div class="direct_pay_button">
+            {% if (paycomet_commerce_password) %}
+                <div class="form-group">
+                    <label for='commerce_password'>{{ text_commerce_password }}</label>
+                    <input type="password" autocomplete="false" class="form-control"
+                           name="commerce_password" id="commerce_password">
+                </div>
+            {% endif %}
+
+            <div class="buttons">
+                <div class="pull-right">
+                    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+                </div>
+            </div>
+        {% endif %}
+        </div>
+    </form>
+</div>
+
+<div id="paycomet_iframe" style="{{ display_iframe }}">
+
+    <h6 style="{{ display_savecards }}">{{ text_streamline }}</h6>
+    <div class="checkbox" style="{{ display_savecards }}">
+        <label for="savecard" class="checkbox">
+            <input type="checkbox" name="savecard" id="savecard" onChange="saveOrderInfoJQ({{ order_id }})" checked>{{ txt_remember }}
+            <a id="open_conditions" class="open_conditions" href="#conditions">{{ txt_terms }}</a>.
+        </label>
+    </div>
+    <iframe id="paycomet_iframe2" src="{{ paycomet_iframe }}" name="paycomet" style="width: 670px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 322px;" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+
+</div>
+
+<div id="conditions" class="modal" style="overflow:auto;display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div id="conditions2" class="modal-body">
+                <h2 class="estilo-tit1">{{ text_conditions4 }}</h2>
+                <p>
+                    {{ text_conditions5 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions6 }}</h2>
+                <p>
+                    {{ text_conditions7 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions8 }}</h2>
+                <p>
+                    {{ text_conditions9 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions10 }}</h2>
+                <p>
+                    {{ text_conditions11 }}
+                </p>
+                <p>
+                    {{ text_conditions12 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions13 }}</h2>
+                <p>
+                    {{ text_conditions14 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions15 }}</h2>
+                <p>
+                    {{ text_conditions16 }}
+                </p>
+                <h2 class="estilo-tit1" id="politica_seguridad">{{ text_conditions17 }}</h2>
+                <p>
+                    {{ text_conditions18 }}
+                </p>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript"><!--
+
+$(document).ready(function() {
+
+  $(document).delegate('.open_conditions', 'click', function(e) {
+    e.preventDefault();
+      $('#conditions').modal('show');
+  });
+  
+
+  $('#button-confirm').bind('click', function() {
+      event.preventDefault();
+      
+      $.ajax({
+        url: 'index.php?route=extension/payment/paycomet/directpay',
+        type: 'post',
+        data: $("#form_paycomet").serialize(),
+        dataType: 'json',
+        cache: false,
+      beforeSend: function() {
+        $('#button-confirm').button('loading');
+      },
+      complete: function() {
+        $('#button-confirm').button('reset');
+      },
+
+      success: function(json) {
+          if (json['ACSURL']) {
+            $('#3dauth').remove();
+
+            html = '<form action="' + json['ACSURL'] + '" method="post" id="3dauth">';
+            html += '</form>';
+
+            $('#paycomet_iframe').after(html);
+
+            $('#3dauth').submit();
+          }
+
+          if (json['error']) {
+            alert(json['error']);
+          }
+
+          if (json['redirect']) {
+            location = json['redirect'];
+          }
+        }
+      });
+    });
+
+});
+
+
+function checkCard(){
+  if ($("#card").val()>0){
+      $("#paycomet_iframe").hide();
+      $(".direct_pay_button").show();
+  }else{
+    $("#paycomet_iframe").show();
+    $(".direct_pay_button").hide();
+  }
+}
+
+function saveOrderInfoJQ(order_id){
+    
+  paycomet_agree = $("#savecard").is(':checked')?1:0;
+
+  $.ajax({
+      url: 'index.php?route=extension/payment/paycomet/saveOrderInfo',
+      type: "POST",
+      data: {
+          'paycomet_agree': paycomet_agree,
+          'order_id' : order_id,
+          'ajax': true
+      },
+      dataType:"json"
+  })
+}
+
+//--></script>

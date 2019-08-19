@@ -1,0 +1,81 @@
+<modification>
+   <name><![CDATA[<font color="#0000"><b>PAYCOMET Cards</font>]]></name>
+   <code>PAYCOMET_Cards</code>
+    <version><![CDATA[<b>1.0</b>]]></version>
+    <author><![CDATA[<font color="#CC0000"><b>PAYCOMET</font>]]></author>
+    <link><![CDATA[http://www.paycomet.com]]></link>
+
+<file path="catalog/language/en-gb/account/account.php">
+    <operation>
+			<search><![CDATA[
+            <?php
+			]]></search>
+			<add position="after"><![CDATA[
+            $_['text_paycomet_cards']  = 'PAYCOMET Cards';]]>
+        	</add>
+	</operation>
+</file>
+<file path="catalog/language/english/account/account.php">
+    <operation>
+			<search><![CDATA[
+            <?php
+			]]></search>
+			<add position="after"><![CDATA[
+            $_['text_paycomet_cards']  = 'PAYCOMET Cards';]]>
+        	</add>
+	</operation>
+</file>
+<file path="catalog/language/es-es/account/account.php">
+    <operation>
+			<search><![CDATA[
+            <?php
+			]]></search>
+			<add position="after"><![CDATA[
+            $_['text_paycomet_cards']  = 'Tarjetas PAYCOMET';]]>
+        	</add>
+	</operation>
+</file>
+<file path="catalog/language/spanish/account/account.php">
+    <operation>
+			<search><![CDATA[
+            <?php
+			]]></search>
+			<add position="after"><![CDATA[
+            $_['text_paycomet_cards']  = 'Tarjetas PAYCOMET';]]>
+        	</add>
+	</operation>
+</file>
+<file path="catalog/language/spanish/account/account.php">
+    <operation>
+			<search><![CDATA[
+            <?php
+			]]></search>
+			<add position="after"><![CDATA[
+            $_['text_paycomet_cards']  = 'Tarjetas PAYCOMET';]]>
+        	</add>
+	</operation>
+</file>
+ 
+ <!-- End Language -->   
+<file path="catalog/controller/account/account.php">
+    <operation>
+			<search><![CDATA[
+			$this->data['text_newsletter'] = $this->language->get('text_newsletter');
+			]]></search>
+			<add position="after"><![CDATA[
+			    $this->data['text_paycomet_cards'] = sprintf($this->language->get('text_paycomet_cards'), "PAYCOMET Cards");
+			    $this->data['text_paycomet_cards_link'] = $this->url->link('credit_card/paycomet', '', 'SSL');]]>
+			</add>
+	</operation>
+</file>			
+<file path="catalog/view/theme/*/template/account/account.tpl">
+    <operation>
+			<search><![CDATA[
+			<?php echo $text_wishlist; ?>
+			]]></search>
+			<add position="after"><![CDATA[
+            <li><a href="<?php echo $text_paycomet_cards_link; ?>"><?php echo $text_paycomet_cards; ?></a></li>
+           ]]></add>
+	</operation>
+</file>	
+</modification>
